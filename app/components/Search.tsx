@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookList from './BookList';
+import Pagination from './Pagination';
+import next from 'next/types';
+import { start } from 'repl';
 
 export interface IImageLinks {
   smallThumbnail: string;
@@ -21,24 +24,65 @@ export interface IBook {
   // previousState: null;
 }
 
-const SearchBar = () => {
-  const [message, setMessage] = useState('');
+export interface IBookSearchResponse {
+  total_items: number;
+  books: IBook[];
+}
 
-  const [data, setData] = useState<IBook[] | null>(null);
+const emptyBookData: IBookSearchResponse = {
+  total_items: 0,
+  books: [],
+};
+
+const LIMIT: number = 10;
+
+const Search = () => {
+  const [data, setData] = useState<IBookSearchResponse>(emptyBookData);
+  const [hasMore, setHasMore] = useState(false);
+  const [keywords, setKeywords] = useState('');
+  const [previousSearchSring, setPreviousSearchString] = useState('');
+  const [startIndex, setStartIndex] = useState(0);
+
+  useEffect(() => {
+    if (keywords.length > 0) searchBooks(keywords);
+  }, [startIndex]);
 
   const handleSearchStringChange = (event) => {
-    setMessage(event.target.value);
+    setKeywords(event.target.value);
   };
 
-  const handleClick = (str: String) => {
-    console.log(str);
+  const handlePageChange = (nextPage: boolean) => {
+    // Reset the startIndex if the search string has changed
+    if (previousSearchSring !== keywords) {
+      // Setting startIndex to the same value doesn't trigger the effect
+      if (startIndex === 0) {
+        searchBooks(keywords);
+      } else {
+        setStartIndex(0);
+      }
+      return;
+    }
+
+    if (nextPage === false && startIndex >= LIMIT) {
+      setStartIndex(startIndex - LIMIT);
+    }
+
+    if (nextPage === true && startIndex + LIMIT <= data.total_items) {
+      setStartIndex(startIndex + LIMIT);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   async function searchBooks(searchString: string) {
     const params = new URLSearchParams();
     params.append('keywords', searchString);
+    params.append('skip', startIndex.toString());
+    params.append('limit', LIMIT.toString());
 
-    console.log(params.toString);
+    setPreviousSearchString(searchString);
     const res = await fetch(
       process.env.NEXT_PUBLIC_BOOK_SEARCH_API_URL +
         `/books/?` +
@@ -51,9 +95,22 @@ const SearchBar = () => {
       }
     )
       .then((res) => res.json())
-      .then((data: IBook[] | null) => {
-        setData(data);
-        // setLoading(false)
+      .then((data: IBookSearchResponse | null) => {
+        if (data === null) {
+          setData({
+            total_items: 0,
+            books: [],
+          });
+          setHasMore(false);
+        } else {
+          setData(data);
+          if (startIndex + LIMIT < data.total_items) {
+            setHasMore(true);
+          } else {
+            setHasMore(false);
+          }
+          scrollToTop();
+        }
       });
   }
   return (
@@ -70,7 +127,7 @@ const SearchBar = () => {
             />
             <button
               className='flex items-center justify-center px-4 border-l'
-              onClick={() => searchBooks(message)}
+              onClick={() => handlePageChange(false)}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -91,10 +148,17 @@ const SearchBar = () => {
         </div>
       </div>
       <div className='container mx-auto'>
-        <BookList books={data} />
+        <BookList books={data.books} />
+      </div>
+      <div>
+        <Pagination
+          hasMore={hasMore}
+          onPageChange={handlePageChange}
+          startIndex={startIndex}
+        />
       </div>
     </div>
   );
 };
 
-export default SearchBar;
+export default Search;
