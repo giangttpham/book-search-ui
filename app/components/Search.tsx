@@ -47,7 +47,9 @@ const Search = () => {
     if (keywords.length > 0) searchBooks(keywords);
   }, [startIndex]);
 
-  const handleSearchStringChange = (event) => {
+  const handleSearchStringChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setKeywords(event.target.value);
   };
 
