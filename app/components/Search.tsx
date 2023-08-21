@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import BookList from './BookList';
 import Pagination from './Pagination';
-import next from 'next/types';
-import { start } from 'repl';
 
 export interface IImageLinks {
   smallThumbnail: string;
@@ -21,7 +19,6 @@ export interface IBook {
   authors: string[];
   description: string;
   image_links: IImageLinks;
-  // previousState: null;
 }
 
 export interface IBookSearchResponse {
