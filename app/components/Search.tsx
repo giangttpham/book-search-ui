@@ -50,7 +50,13 @@ const Search = () => {
     setKeywords(event.target.value);
   };
 
-  const handlePageChange = (nextPage: boolean) => {
+  const handleEnterKey = (e: { key: string }) => {
+    if (e.key === 'Enter') {
+      handlePageChange(null);
+    }
+  };
+
+  const handlePageChange = (nextPage: boolean | null) => {
     // Reset the startIndex if the search string has changed
     if (previousSearchSring !== keywords) {
       // Setting startIndex to the same value doesn't trigger the effect
@@ -122,13 +128,14 @@ const Search = () => {
               id='message'
               type='text'
               onChange={handleSearchStringChange}
+              onKeyDown={handleEnterKey}
               className='px-4 py-2'
               placeholder='Enter book keywords...'
             />
             <button
               data-test-id='search-button'
               className='flex items-center justify-center px-4 border-l'
-              onClick={() => handlePageChange(false)}
+              onClick={() => handlePageChange(null)}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
