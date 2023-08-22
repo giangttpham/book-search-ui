@@ -15,6 +15,7 @@ const Pagination: FunctionComponent<PaginationProp> = ({
     <div className='bg-gray-200 p-5 flex justify-center mx-auto'>
       <div className='flex flex-row mx-auto'>
         <button
+          data-test-id='prev-button'
           type='button'
           onClick={() => onPageChange(false)}
           disabled={startIndex <= 0}
@@ -37,6 +38,7 @@ const Pagination: FunctionComponent<PaginationProp> = ({
           </div>
         </button>
         <button
+          data-test-id='next-button'
           type='button'
           disabled={hasMore === false}
           onClick={() => onPageChange(true)}

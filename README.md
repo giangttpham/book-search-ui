@@ -10,7 +10,7 @@ This is a NextJs app with Tailwind CSS. The UI contains:
 
 ### Run locally
 
-To run this code locally for development, run one of the following commands
+To run this code locally for development, run `npm install` and then run one of the following commands
 
 ```bash
 npm run dev
@@ -25,3 +25,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Deployed on Vercel
 
 This app is deployed on [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme). To visit the current deployment, follow this link https://book-search-4ikc9li2d-giangttpham.vercel.app/
+
+### Testing with Cypress
+
+- To run tests through Cypress UI, run `npm cypress`. Choose `Component Testing` and then select the browser where the tests will run.
+- To run tests headlessly, run `npm run cy:run -- --component`

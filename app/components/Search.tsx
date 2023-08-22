@@ -118,6 +118,7 @@ const Search = () => {
         <div className='flex items-center justify-center'>
           <div className='flex border-2 rounded'>
             <input
+              data-test-id='search-input'
               id='message'
               type='text'
               onChange={handleSearchStringChange}
@@ -125,6 +126,7 @@ const Search = () => {
               placeholder='Enter book keywords...'
             />
             <button
+              data-test-id='search-button'
               className='flex items-center justify-center px-4 border-l'
               onClick={() => handlePageChange(false)}
             >
