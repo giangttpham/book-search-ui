@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Deployed on Vercel
 
-This app is deployed on [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme). To visit the current deployment, follow this link https://book-search-4ikc9li2d-giangttpham.vercel.app/
+This app is deployed on [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme). To visit the current deployment, follow this link https://book-search-ui-git-master-giangttpham.vercel.app/
 
 ### Testing with Cypress
 
